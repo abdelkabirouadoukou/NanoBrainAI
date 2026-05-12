@@ -1,6 +1,6 @@
 import math
 
-def sigmoid(z):
+def sigmoid(z: float) -> float:
     """
     Sigmoid activation function: σ(z) = 1 / (1 + e^(-z))
     Maps R to (0, 1).
@@ -10,7 +10,7 @@ def sigmoid(z):
         return 0.0
     return 1.0 / (1.0 + math.exp(-z))
 
-def sigmoid_derivative(z):
+def sigmoid_derivative(z: float) -> float:
     """
     Derivative of sigmoid: σ'(z) = σ(z) * (1 - σ(z))
     Used for Backpropagation.
