@@ -25,17 +25,13 @@ The goal is not only to make the code work, but also to show the mathematics beh
 
 A neuron computes:
 
-\[
-z = \sum_{i=1}^{n} w_i x_i + b
-\]
+z = sum_{i=1..n} w_i x_i + b
 
 Then applies a nonlinear activation:
 
-\[
-a = \sigma(z) = \frac{1}{1 + e^{-z}}
-\]
+a = σ(z) = 1 / (1 + e^{-z})
 
-The neuron learns by comparing its prediction \(a\) to the target \(y\), measuring the error, and updating its parameters to reduce that error.
+The neuron learns by comparing its prediction (a) to the target (y), measuring the error, and updating its parameters to reduce that error.
 
 ---
 
@@ -45,46 +41,21 @@ The neuron learns by comparing its prediction \(a\) to the target \(y\), measuri
 
 The activation function is:
 
-\[
-\sigma(z) = \frac{1}{1 + e^{-z}}
-\]
+σ(z) = 1 / (1 + e^{-z})
 
-Its limits are:
-
-\[
-\lim_{z \to +\infty} \sigma(z) = 1
-\qquad\text{and}\qquad
-\lim_{z \to -\infty} \sigma(z) = 0
-\]
+Its limits are: as z → +∞, σ(z) → 1; as z → -∞, σ(z) → 0.
 
 So the output stays between 0 and 1, which makes it useful for a neuron that behaves like a smooth switch.
 
 ### 2. Derivative of Sigmoid
 
-Starting from:
+Starting from σ(z) = (1 + e^{-z})^{-1} and differentiating gives:
 
-\[
-\sigma(z) = (1 + e^{-z})^{-1}
-\]
-
-we differentiate:
-
-\[
-\sigma'(z)
-= - (1 + e^{-z})^{-2}\cdot(-e^{-z})
-\]
-
-which gives:
-
-\[
-\sigma'(z) = \frac{e^{-z}}{(1 + e^{-z})^2}
-\]
+σ'(z) = e^{-z} / (1 + e^{-z})^2
 
 A useful equivalent form is:
 
-\[
-\sigma'(z) = \sigma(z)\bigl(1 - \sigma(z)\bigr)
-\]
+σ'(z) = σ(z) * (1 - σ(z))
 
 This identity is especially important in backpropagation.
 
@@ -92,20 +63,13 @@ This identity is especially important in backpropagation.
 
 For a single prediction:
 
-\[
-L = (y - \hat{y})^2
-\]
+L = (y - y_hat)^2
 
-where:
-
-- \(y\) is the target
-- \(\hat{y}\) is the prediction
+where y is the target and y_hat is the prediction.
 
 The derivative with respect to the prediction is:
 
-\[
-\frac{\partial L}{\partial \hat{y}} = 2(\hat{y} - y)
-\]
+dL/d(y_hat) = 2 * (y_hat - y)
 
 This tells the model how to correct itself.
 
@@ -113,67 +77,35 @@ This tells the model how to correct itself.
 
 For one neuron:
 
-\[
-z = \sum_i w_i x_i + b,\qquad
-a = \sigma(z),\qquad
+z = sum_i w_i x_i + b
+a = σ(z)
 L = (a - y)^2
-\]
 
 Using the chain rule:
 
-\[
-\frac{\partial L}{\partial w_i}
-=
-\frac{\partial L}{\partial a}
-\cdot
-\frac{\partial a}{\partial z}
-\cdot
-\frac{\partial z}{\partial w_i}
-\]
+dL/dw_i = dL/da * da/dz * dz/dw_i
 
-with:
-
-\[
-\frac{\partial L}{\partial a} = 2(a-y)
-\]
-
-\[
-\frac{\partial a}{\partial z} = a(1-a)
-\]
-
-\[
-\frac{\partial z}{\partial w_i} = x_i
-\]
+with dL/da = 2 * (a - y)
+and da/dz = a * (1 - a)
+and dz/dw_i = x_i
 
 Therefore:
 
-\[
-\frac{\partial L}{\partial w_i}
-=
-2(a-y)\,a(1-a)\,x_i
-\]
+dL/dw_i = 2 * (a - y) * a * (1 - a) * x_i
 
 For the bias:
 
-\[
-\frac{\partial L}{\partial b}
-=
-2(a-y)\,a(1-a)
-\]
+dL/db = 2 * (a - y) * a * (1 - a)
 
 ### 5. Gradient Descent Update
 
 Each parameter is updated by:
 
-\[
-w_i \leftarrow w_i - \eta \frac{\partial L}{\partial w_i}
-\]
+w_i <- w_i - η * dL/dw_i
 
-\[
-b \leftarrow b - \eta \frac{\partial L}{\partial b}
-\]
+b <- b - η * dL/db
 
-where \(\eta\) is the learning rate.
+where η is the learning rate.
 
 This is the mechanism that makes the neuron learn.
 
